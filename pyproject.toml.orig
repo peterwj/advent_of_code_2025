@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "aoc-scaffold"
+version = "0.1.0"
+description = "Advent of Code Python scaffold with Click-based CLI."
+authors = ["Your Name <you@example.com>"]
+readme = "README.md"
+packages = [
+    { include = "aoc_cli", from = "src" },
+]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+click = "^8.1"
+pydantic = "^2.12.5"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.0"
+
+[tool.poetry.scripts]
+aoc = "aoc_cli.cli:cli"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
