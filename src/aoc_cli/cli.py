@@ -134,13 +134,13 @@ def new(day: int, force: bool, inputs_dir: Path, templates_dir: Path):
     inputs_dir.mkdir(parents=True, exist_ok=True)
 
     template = template_file.read_text(encoding="utf-8")
-    day_module_contents = template.format(day_num=day)
-    day_module_path.write_text(day_module_contents, encoding="utf-8")
+    # day_module_contents = template.format(day_num=day)
+    # day_module_path.write_text(day_module_contents, encoding="utf-8")
 
     if not input_file_path.exists() or force:
         input_file_path.write_text("", encoding="utf-8")
 
-    click.echo(f"Created {day_module_path}")
+    # click.echo(f"Created {day_module_path}")
     click.echo(f"Created {input_file_path}")
 
 

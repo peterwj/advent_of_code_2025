@@ -32,6 +32,10 @@ R14
 L82
 """.strip()
 
+DAY_2_INPUT = """
+11-22,95-115,998-1012,1188511880-1188511890,222220-222224,1698522-1698528,446443-446449,38593856-38593862,565653-565659,824824821-824824827,2121212118-2121212124
+""".strip()
+
 from dataclasses import dataclass
 
 
@@ -47,6 +51,8 @@ EXAMPLE_CASES: list[dict[str, object]] = [
     Example(day=1, part=1, input_=DAY_1_INPUT, expected=3),
     Example(day=1, part=2, input_=DAY_1_INPUT, expected=6),
     Example(day=1, part=2, input_="R1000", expected=10),
+    Example(day=2, part=1, input_=DAY_2_INPUT, expected=1227775554),
+    Example(day=2, part=2, input_=DAY_2_INPUT, expected=4174379265),
 ]
 
 
