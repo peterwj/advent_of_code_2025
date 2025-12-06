@@ -77,10 +77,7 @@ def run(day: int, part: int, input_path: Optional[Path]):
             f"Module {module.__name__} has no 'solve(part, data)' function."
         )
 
-    try:
-        result = module.solve(part=part, data=data)
-    except Exception as exc:  # noqa: BLE001
-        raise click.ClickException(f"Error while solving: {exc}") from exc
+    result = module.solve(part=part, data=data)
 
     click.echo(result)
 

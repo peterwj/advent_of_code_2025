@@ -15,19 +15,29 @@ class Direction(Enum):
     RIGHT = 2
 
 
+N_CLICKS = 100
+
+
 @dataclass
 class State:
-    position: int = Field(default=50, ge=0, lt=100)
+    position: int = Field(default=50, ge=0, lt=N_CLICKS)
+    times_crossing_zero: int = Field(default=0, ge=0)
+    times_terminating_at_zero: int = Field(default=0, ge=0)
 
     def apply(self, m: Move) -> None:
         """
         Apply Move m to the current state.
         """
-        self.position = (
-            self.position + (m.clicks
-            if m.direction == Direction.RIGHT
-            else -1 * m.clicks)
-        ) % 100
+        for _ in range(m.clicks):
+            # click, click, click
+            self.position = (
+                (1 if m.direction == Direction.RIGHT else -1) + self.position
+            ) % N_CLICKS
+            if self.position == 0:
+                self.times_crossing_zero += 1
+        if self.position == 0:
+            self.times_terminating_at_zero += 1
+
 
 @dataclass
 class Move:
@@ -47,34 +57,21 @@ class Move:
 
 
 def part1(values) -> int:
-    """Solve part 1 of the puzzle.
-
-    For demonstration, we'll just return the sum.
-    """
     state = State()
-    result = 0
     for move in values:
         state.apply(move)
-        result += 1 if state.position == 0 else 0
-    return result
+    return state.times_terminating_at_zero
 
 
 def part2(values) -> int:
-    """Solve part 2 of the puzzle.
-
-    For demonstration, we'll return the product (or 0 if empty).
-    """
-    raise NotImplementedError()
+    state = State()
+    for move in values:
+        state.apply(move)
+    return state.times_crossing_zero
 
 
 def solve(part: int, data: str) -> str:
-    """Entry point used by the CLI.
-
-    :param part: 1 or 2
-    :param data: Raw puzzle input
-    :return: The answer as a string
-    """
-    values = [Move.from_string(datum) for datum in data.split("\n")]
+    values = [Move.from_string(datum) for datum in data.strip().split("\n")]
     if part == 1:
         ans = part1(values)
     elif part == 2:

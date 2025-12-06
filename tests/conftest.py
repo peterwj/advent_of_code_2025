@@ -18,4 +18,4 @@ def run_solve(day: int, part: int, data: str) -> any:
     if not hasattr(module, "solve"):
         raise AttributeError(f"Module {module.__name__} has no 'solve' function")
     result = module.solve(part=part, data=data)
-    return result 
+    return result

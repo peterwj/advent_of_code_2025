@@ -19,12 +19,7 @@ from . import conftest
 # This makes it quick to paste the sample input from the site and record
 # the known answers for regression.
 
-
-EXAMPLE_CASES: list[dict[str, object]] = [
-    {
-        "day": 1,
-        "part": 1,
-        "input": """
+DAY_1_INPUT = """
 L68
 L30
 R48
@@ -35,21 +30,35 @@ L1
 L99
 R14
 L82
-        """.strip(),
-        "expected": 3,
-    },
+""".strip()
+
+from dataclasses import dataclass
+
+
+@dataclass
+class Example:
+    day: int
+    part: int
+    input_: str
+    expected: any
+
+
+EXAMPLE_CASES: list[dict[str, object]] = [
+    Example(day=1, part=1, input_=DAY_1_INPUT, expected=3),
+    Example(day=1, part=2, input_=DAY_1_INPUT, expected=6),
+    Example(day=1, part=2, input_="R1000", expected=10),
 ]
 
 
 @pytest.mark.parametrize(
     "case",
     EXAMPLE_CASES,
-    ids=lambda case: f"day{case['day']:02d}-part{case['part']}",
+    ids=lambda case: f"day{case.day:02d}-part{case.part}",
 )
 def test_examples(case: dict[str, object]) -> None:
     result = conftest.run_solve(
-        day=case["day"],  # type: ignore[arg-type]
-        part=case["part"],  # type: ignore[arg-type]
-        data=case["input"],  # type: ignore[arg-type]
+        day=case.day,  # type: ignore[arg-type]
+        part=case.part,  # type: ignore[arg-type]
+        data=case.input_,  # type: ignore[arg-type]
     )
-    assert result == case['expected']
+    assert result == case.expected
