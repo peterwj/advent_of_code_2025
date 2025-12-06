@@ -49,24 +49,27 @@ def is_valid(pid) -> bool:
         return False
     return True
 
+
 def is_repeating_sequence(pid_s, segment):
-    '''
+    """
     Returns True if segment is composed of pid_s repeated multiple times.
-    '''
-    if len(pid_s) % len(segment) != 0: return False
-    for i in range (len(pid_s) // len(segment)):
+    """
+    if len(pid_s) % len(segment) != 0:
+        return False
+    for i in range(len(pid_s) // len(segment)):
         base_idx = i * len(segment)
-        if pid_s[base_idx:(base_idx + len(segment))] != segment:
+        if pid_s[base_idx : (base_idx + len(segment))] != segment:
             return False
     return True
-        
+
 
 def is_valid_p2(pid) -> bool:
     pid_s = str(pid)
     if pid_s[0] == "0":
         raise ValueError(f"Invalidly formatted pid {pid_s}")
-    for i in range(2, len(pid_s) ):
-        if is_repeating_sequence(pid_s, pid_s[i:]):        return False
+    for i in range(2, len(pid_s)):
+        if is_repeating_sequence(pid_s, pid_s[i:]):
+            return False
     return True
 
 
