@@ -18,29 +18,25 @@ from . import conftest
 #
 # This makes it quick to paste the sample input from the site and record
 # the known answers for regression.
-EXAMPLE_INPUT_DAY1 = dedent(
-    """\
-    1
-    2
-    3
-    4
-    5
-    """
-).strip()
 
 
 EXAMPLE_CASES: list[dict[str, object]] = [
     {
         "day": 1,
         "part": 1,
-        "input": EXAMPLE_INPUT_DAY1,
-        "expected": "15",  # 1+2+3+4+5
-    },
-    {
-        "day": 1,
-        "part": 2,
-        "input": EXAMPLE_INPUT_DAY1,
-        "expected": "120",  # 1*2*3*4*5
+        "input": """
+L68
+L30
+R48
+L5
+R60
+L55
+L1
+L99
+R14
+L82
+        """.strip(),
+        "expected": 3,
     },
 ]
 
@@ -52,7 +48,8 @@ EXAMPLE_CASES: list[dict[str, object]] = [
 )
 def test_examples(case: dict[str, object]) -> None:
     result = conftest.run_solve(
-        day=case["day"],   # type: ignore[arg-type]
-        part=case["part"], # type: ignore[arg-type]
-        data=case["input"],# type: ignore[arg-type]
+        day=case["day"],  # type: ignore[arg-type]
+        part=case["part"],  # type: ignore[arg-type]
+        data=case["input"],  # type: ignore[arg-type]
     )
+    assert result == case['expected']

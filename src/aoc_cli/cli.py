@@ -28,8 +28,7 @@ def _load_day_module(day: int):
         return importlib.import_module(module_name)
     except ModuleNotFoundError as exc:
         raise click.ClickException(
-            f"Day {day} is not implemented yet. "
-            f"Expected module '{module_name}'."
+            f"Day {day} is not implemented yet. " f"Expected module '{module_name}'."
         ) from exc
 
 
@@ -62,8 +61,7 @@ def _read_input(day: int, input_path: Optional[Path]) -> str:
     "-i",
     "input_path",
     type=click.Path(exists=False, dir_okay=False, path_type=Path),
-    help="Path to the input file. "
-         "Defaults to inputs/dayXX.txt in the project root.",
+    help="Path to the input file. " "Defaults to inputs/dayXX.txt in the project root.",
 )
 def run(day: int, part: int, input_path: Optional[Path]):
     """Run the solution for a given DAY.
