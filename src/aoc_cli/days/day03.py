@@ -48,9 +48,9 @@ class BatteryBank:
                 continue
             bv[i] = True
             voltage = self._voltage_for_bitvector(bv)
-            if voltage  > max_value:
+            if voltage > max_value:
                 max_value = voltage
-                result = [x for x in bv] # deep copy
+                result = [x for x in bv]  # deep copy
             bv[i] = False
         return result
 
@@ -71,13 +71,12 @@ def part0(banks: List[BatteryBank]) -> int:
     return sum(bank.max_voltage_for_n(1) for bank in banks)
 
 
-def part1(banks: List[BatteryBank]) -> int:
-    print('meow2',[bank.max_voltage_for_2 for bank in banks])
-    return sum(bank.max_voltage_for_2 for bank in banks)
+def part1(banks: List[BatteryBank], n: int = 2) -> int:
+    return sum(bank.max_voltage_for_n(n) for bank in banks)
 
 
 def part2(banks: List[BatteryBank]):
-    pass
+    return sum(bank.max_voltage_for_n(12) for bank in banks)
 
 
 def solve(part: int, data: str) -> str:
@@ -88,6 +87,8 @@ def solve(part: int, data: str) -> str:
         ans = part1(values)
     elif part == 2:
         ans = part2(values)
+    elif part >= 3 and part <= 5:
+        ans = part1(values, part)
     else:
         raise ValueError(f"Unsupported part: {part}")
     return ans
