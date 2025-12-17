@@ -12,16 +12,6 @@ files = [
 ]
 
 [[package]]
-name = "bitvector"
-version = "3.5.0"
-description = "A memory-efficient packed representation for bit arrays in pure Python"
-optional = false
-python-versions = "*"
-files = [
-    {file = "BitVector-3.5.0.tar.gz", hash = "sha256:cac2fbccf11e325115827ed7be03e5fd62615227b0bbf3fa5a18a842a221839c"},
-]
-
-[[package]]
 name = "black"
 version = "25.11.0"
 description = "The uncompromising code formatter."
@@ -401,4 +391,4 @@ typing-extensions = ">=4.12.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "f484f5629989c65cf62e6c85f504d469261ca58d1e73253906aad336ff5c69dc"
+content-hash = "2810dd855cec75d383b362e608e4518da8a9bd7fd30d700848cac2773ef3e3d3"
