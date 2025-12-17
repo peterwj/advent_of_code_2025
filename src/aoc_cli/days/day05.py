@@ -1,10 +1,10 @@
 from __future__ import annotations
-from pydantic import BaseModel, ValidationError, Field
-from pydantic.dataclasses import dataclass
+from dataclasses import dataclass
 import dataclasses
 from typing import List, Set
 import math
 from copy import deepcopy
+from BitVector import BitVector
 
 
 @dataclass
@@ -21,6 +21,7 @@ class IngredientIDs:
     min_id: int
     max_id: int
     id_ranges: List[Range]
+    bv: BitVector
 
     @classmethod
     def from_string(cls, data: str) -> "IngredientIDs":
@@ -36,7 +37,12 @@ class IngredientIDs:
                 max_id = end
             id_ranges.append(Range(start, end + 1))
 
-        return cls(min_id, max_id, id_ranges)
+        bv = BitVector(size=max_id+1)
+        for r in id_ranges:
+            for x in range(r.start, r.end):
+                bv[x] = 1
+
+        return cls(min_id, max_id, id_ranges, bv)
 
 
 def part1(data: str) -> int:
@@ -59,15 +65,7 @@ def part2(data: str) -> int:
     fresh_ranges, available_ids = data.split("\n\n")
     fresh_ranges = IngredientIDs.from_string(fresh_ranges)
 
-    result = 0
-    print(fresh_ranges.min_id, fresh_ranges.max_id)
-    for i in range(fresh_ranges.min_id, fresh_ranges.max_id+1):
-        for r in fresh_ranges.id_ranges:
-            if r.contains(i):
-                result += 1
-                break
-            
-    return result
+    return fresh_ranges.bv.count_bits()
 
 def solve(part: int, data: str) -> int:
     ans = None
