@@ -1,23 +1,13 @@
 from __future__ import annotations
 
+from dataclasses import dataclass
+
 from textwrap import dedent
 
 import pytest
 
 from . import conftest
 
-
-# Example "small input" tests taken from the Day 1 stub implementation.
-# Add more dictionaries to EXAMPLE_CASES for each new example you want to
-# validate. For each case you specify:
-#
-#   - day:      Advent of Code day number (int)
-#   - part:     1 or 2
-#   - input:    The small example input as a single string
-#   - expected: The expected answer as a string (what the puzzle states)
-#
-# This makes it quick to paste the sample input from the site and record
-# the known answers for regression.
 
 DAY_1_INPUT = """
 L68
@@ -43,7 +33,18 @@ DAY_03_INPUT = """
 818181911112111
 """.strip()
 
-from dataclasses import dataclass
+DAY_04_INPUT = """
+..@@.@@@@.
+@@@.@.@.@@
+@@@@@.@.@@
+@.@@@@..@.
+@@.@@@@.@@
+.@@@@@@@.@
+.@.@.@.@@@
+@.@@@.@@@@
+.@@@@@@@@.
+@.@.@@@.@.
+""".strip()
 
 
 @dataclass
@@ -65,6 +66,8 @@ EXAMPLE_CASES: list[dict[str, object]] = [
     Example(day=3, part=3, input_=DAY_03_INPUT, expected=987 + 819 + 478 + 921),
     Example(day=3, part=4, input_=DAY_03_INPUT, expected=9876 + 8119 + 4478 + 9211),
     Example(day=3, part=2, input_=DAY_03_INPUT, expected=3121910778619),
+    Example(day=4, part=1, input_=DAY_04_INPUT, expected=13),
+    Example(day=4, part=2, input_=DAY_04_INPUT, expected=43),
 ]
 
 
