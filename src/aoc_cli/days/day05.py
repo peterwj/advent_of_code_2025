@@ -6,35 +6,53 @@ from typing import List, Set
 import math
 from copy import deepcopy
 
+
 @dataclass
-class IngredientIDs():
+class Range:
+    start: int
+    end: int
+
+    def is_in(self, x: int) -> bool:
+        return x > self.start and x < self.end
+
+
+@dataclass
+class IngredientIDs:
     min_id: int
     max_id: int
-    fresh_ids: Set[int]
+    id_ranges: List[Range]
 
     @classmethod
     def from_string(cls, data: str) -> "IngredientIDs":
         min_id = math.inf
         max_id = -math.inf
-        fresh_ids = set()
-        for row in data.split('\n'):
-            start, end = map( (lambda x: int(x)), row.split('-'))
-            if start < min_id: min_id = start
-            if end > max_id: max_id = end
-            fresh_ids |= set(range(start, end+1))
-        return cls(min_id, max_id, fresh_ids)
-            
+        id_ranges = []
 
-def part1(data:str) -> int:
-    fresh_ranges, available_ids = data.split('\n\n')
+        for row in data.split("\n"):
+            start, end = map((lambda x: int(x)), row.split("-"))
+            if start < min_id:
+                min_id = start
+            if end > max_id:
+                max_id = end
+            id_ranges.append(Range(start, end + 1))
+
+        return cls(min_id, max_id, id_ranges)
+
+
+def part1(data: str) -> int:
+    fresh_ranges, available_ids = data.split("\n\n")
     fresh_ranges = IngredientIDs.from_string(fresh_ranges)
-    
+
     result = 0
-    for row in available_ids.split('\n'):
+    for row in available_ids.split("\n"):
         row = row.strip()
-        if not row: continue
-        if int(row) in fresh_ranges.fresh_ids:
-            result +=1 
+        if not row:
+            continue
+        row = int(row)
+        for r in fresh_ranges.id_ranges:
+            if r.is_in(row):
+                result += 1
+                break
     return result
 
 

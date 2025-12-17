@@ -48,6 +48,7 @@ def part1(room: Room) -> int:
                 result += 1
     return result
 
+
 def _part2_pass(room: Room) -> Tuple[Room, int]:
     result = 0
     new_room = deepcopy(room)

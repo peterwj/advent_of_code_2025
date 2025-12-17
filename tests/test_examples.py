@@ -46,7 +46,7 @@ DAY_04_INPUT = """
 @.@.@@@.@.
 """.strip()
 
-DAY_05_INPUT = '''
+DAY_05_INPUT = """
 3-5
 10-14
 16-20
@@ -58,7 +58,7 @@ DAY_05_INPUT = '''
 11
 17
 32
-'''.strip()
+""".strip()
 
 
 @dataclass
