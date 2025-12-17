@@ -12,8 +12,8 @@ class Range:
     start: int
     end: int
 
-    def is_in(self, x: int) -> bool:
-        return x > self.start and x < self.end
+    def contains(self, x: int) -> bool:
+        return x >= self.start and x < self.end
 
 
 @dataclass
@@ -50,11 +50,24 @@ def part1(data: str) -> int:
             continue
         row = int(row)
         for r in fresh_ranges.id_ranges:
-            if r.is_in(row):
+            if r.contains(row):
                 result += 1
                 break
     return result
 
+def part2(data: str) -> int:
+    fresh_ranges, available_ids = data.split("\n\n")
+    fresh_ranges = IngredientIDs.from_string(fresh_ranges)
+
+    result = 0
+    print(fresh_ranges.min_id, fresh_ranges.max_id)
+    for i in range(fresh_ranges.min_id, fresh_ranges.max_id+1):
+        for r in fresh_ranges.id_ranges:
+            if r.contains(i):
+                result += 1
+                break
+            
+    return result
 
 def solve(part: int, data: str) -> int:
     ans = None
