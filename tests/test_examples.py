@@ -46,6 +46,20 @@ DAY_04_INPUT = """
 @.@.@@@.@.
 """.strip()
 
+DAY_05_INPUT = '''
+3-5
+10-14
+16-20
+12-18
+
+1
+5
+8
+11
+17
+32
+'''.strip()
+
 
 @dataclass
 class Example:
@@ -68,6 +82,7 @@ EXAMPLE_CASES: list[dict[str, object]] = [
     Example(day=3, part=2, input_=DAY_03_INPUT, expected=3121910778619),
     Example(day=4, part=1, input_=DAY_04_INPUT, expected=13),
     Example(day=4, part=2, input_=DAY_04_INPUT, expected=43),
+    Example(day=5, part=1, input_=DAY_05_INPUT, expected=3),
 ]
 
 
