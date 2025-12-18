@@ -35,15 +35,23 @@ def _solve(data: str) -> int:
     return n_splits
 
 
-def dfs(rows: List[List[str]], row_idx: int, col_idx: int) -> int:
+def dfs(
+    rows: List[List[str]], row_idx: int, col_idx: int, cache: Dict[Tuple[int, int], int]
+) -> int:
     # travel downwards from our starting index
     n_rows = len(rows)
-    result = 0
     for i in range(row_idx, n_rows):
         if rows[i][col_idx] == ".":
             continue
         if rows[i][col_idx] == "^":
-            return dfs(rows, i + 1, col_idx - 1) + dfs(rows, i + 1, col_idx + 1)
+            cache_key = (i, col_idx)
+            if cache_key in cache:
+                return cache[cache_key]
+            result = dfs(rows, i + 1, col_idx - 1, cache) + dfs(
+                rows, i + 1, col_idx + 1, cache
+            )
+            cache[cache_key] = result
+            return result
         raise ValueError("invalid character")
     return 1
 
@@ -53,7 +61,7 @@ def part2(data: str) -> int:
     manifold_entry = rows[0]
     rest = rows[1:]
     initial_beam_index = manifold_entry.find("S")
-    return dfs(rest, 0, initial_beam_index)
+    return dfs(rest, 0, initial_beam_index, dict())
 
 
 def solve(part: int, data: str) -> int:
