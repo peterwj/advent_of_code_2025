@@ -113,6 +113,7 @@ EXAMPLE_CASES: list[dict[str, object]] = [
     Example(day=6, part=1, input_=DAY_06_INPUT, expected=4277556),
     Example(day=6, part=2, input_=DAY_06_INPUT, expected=3263827),
     Example(day=7, part=1, input_=DAY_07_INPUT, expected=21),
+    Example(day=7, part=2, input_=DAY_07_INPUT, expected=40),
 ]
 
 
