@@ -2,7 +2,7 @@ from __future__ import annotations
 from functools import reduce
 import itertools
 import math
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 import dataclasses
 from typing import List, Set, Optional
 import math
@@ -31,6 +31,9 @@ class JunctionBox:
 class JunctionBoxCollection:
     all_boxes: List[JunctionBox]
     box_to_network: Mapping[JunctionBox, Set[JunctionBox]]
+    _distance_to_boxes: Mapping[float, Tuple[JunctionBox, JunctionBox]] = field(
+        default_factory=dict
+    )
 
     @classmethod
     def from_s(cls, rows: List[str]) -> "JunctionBoxCollection":
@@ -53,6 +56,14 @@ class JunctionBoxCollection:
         assert result is not None
         return result
 
+    def _populate_distance_cache(self) -> None:
+        for i, b1 in enumerate(self.all_boxes):
+            for j, b2 in enumerate(self.all_boxes):
+                if i >= j:
+                    continue
+                distance = b1.distance_to(b2)
+                self._distance_to_boxes[distance] = (b1, b2)
+
     def connect_two_boxes(self, b1: JunctionBox, b2: JunctionBox) -> None:
         b1_net = self.box_to_network[b1]
         b2_net = self.box_to_network[b2]
@@ -60,15 +71,28 @@ class JunctionBoxCollection:
             b1_net.add(box)
             self.box_to_network[box] = b1_net
 
+    def in_same_network(self, b1: JunctionBox, b2: JunctionBox) -> bool:
+        return b2 in self.box_to_network[b1]
+
 
 def part1(n_connections: int, jb_data: JunctionBoxCollection) -> int:
-    # connect the networks.
-    for _ in range(n_connections - 1):
-        closest_pair = jb_data.find_closest_unconnected_pair()
-        jb_data.connect_two_boxes(*closest_pair)
+    jb_data._populate_distance_cache()
+    ordered_distances = sorted(jb_data._distance_to_boxes.keys())
+    connected_boxes = 0
+    i = 0
+    while connected_boxes < n_connections:
+        closest_d = ordered_distances[i]
+        i += 1
+
+        b1, b2 = jb_data._distance_to_boxes[closest_d]
+        if not jb_data.in_same_network(b1, b2):
+            jb_data.connect_two_boxes(b1, b2)
+
+        connected_boxes += 1
 
     # find the three largest.
     all_networks = set()
+
     for network in jb_data.box_to_network.values():
         all_networks.add(frozenset(network))
     return math.prod(sorted([len(x) for x in all_networks], reverse=True)[0:3])
@@ -80,7 +104,6 @@ def solve(part: int, data: str) -> int:
     n_connections = int(rows[0])
     rows = rows[1:]
     jb_data = JunctionBoxCollection.from_s(rows)
-    # pprint(jb_data)
     if part == 1:
         ans = part1(n_connections, jb_data)
     elif part == 2:
