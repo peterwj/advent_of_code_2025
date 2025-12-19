@@ -74,21 +74,20 @@ class JunctionBoxCollection:
     def in_same_network(self, b1: JunctionBox, b2: JunctionBox) -> bool:
         return b2 in self.box_to_network[b1]
 
+    @property
+    def is_one_network(self) -> bool:
+        return len(self.all_boxes) == len(self.box_to_network[self.all_boxes[0]])
+
 
 def part1(n_connections: int, jb_data: JunctionBoxCollection) -> int:
     jb_data._populate_distance_cache()
     ordered_distances = sorted(jb_data._distance_to_boxes.keys())
-    connected_boxes = 0
-    i = 0
-    while connected_boxes < n_connections:
+    for i in range(n_connections):
         closest_d = ordered_distances[i]
-        i += 1
 
         b1, b2 = jb_data._distance_to_boxes[closest_d]
         if not jb_data.in_same_network(b1, b2):
             jb_data.connect_two_boxes(b1, b2)
-
-        connected_boxes += 1
 
     # find the three largest.
     all_networks = set()
@@ -96,6 +95,22 @@ def part1(n_connections: int, jb_data: JunctionBoxCollection) -> int:
     for network in jb_data.box_to_network.values():
         all_networks.add(frozenset(network))
     return math.prod(sorted([len(x) for x in all_networks], reverse=True)[0:3])
+
+
+def part2(jb_data: JunctionBoxCollection) -> int:
+    jb_data._populate_distance_cache()
+    ordered_distances = sorted(jb_data._distance_to_boxes.keys())
+    i = 0
+    while True:
+        closest_d = ordered_distances[i]
+        i += 1
+
+        b1, b2 = jb_data._distance_to_boxes[closest_d]
+        if not jb_data.in_same_network(b1, b2):
+            jb_data.connect_two_boxes(b1, b2)
+
+        if jb_data.is_one_network:
+            return b1.x * b2.x
 
 
 def solve(part: int, data: str) -> int:
@@ -107,7 +122,7 @@ def solve(part: int, data: str) -> int:
     if part == 1:
         ans = part1(n_connections, jb_data)
     elif part == 2:
-        ans = part2(data)
+        ans = part2(jb_data)
     else:
         raise ValueError(f"Unsupported part: {part}")
     return ans
